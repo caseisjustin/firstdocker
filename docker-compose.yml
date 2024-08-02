@@ -1,0 +1,32 @@
+services:
+  docker-b-service:
+    build:
+      context: ./dockerisation_compose
+      dockerfile: Dockerfile
+    container_name: dockerisation_compose
+    env_file:
+      - .env
+    ports:
+      - '4001:3000'
+    depends_on:
+      - db
+  nest-services:
+    build:
+      context: ./docker_service
+      dockerfile: Dockerfile
+    container_name: docker_service
+    env_file: 
+      - .env
+    ports:
+      - '4002:3000'
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: dockerisation_db
+    env_file:
+      .env
+    environment:
+      - POSTGRES_PASSWORD=1234
+    ports:
+      - '5432:5432'
